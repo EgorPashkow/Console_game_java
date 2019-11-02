@@ -12,15 +12,19 @@ public class Galaxy {
     }
     
     public void AddPlanet(Planet p){
-    	if(!planet.contains(p)){
-    		planet.add(p);
+    	synchronized(planet) {
+    		if(!planet.contains(p)){
+    			planet.add(p);
+    		}
     	}
     }
     
     public void DelPlanet(Planet p){
-    	if(p != null) {
-    		planet.remove(p);
-    	}   
+    	synchronized(planet) {
+    		if(p != null) {
+    			planet.remove(p);
+    		}   
+    	}
     }
     
     public Planet GetPlanet(String name){

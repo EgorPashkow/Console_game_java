@@ -28,14 +28,18 @@ public class Planet {
     }
     
     public void AddColony(Colony c){
-    	if(!colonies.contains(c)){
-    		colonies.add(c);
+    	synchronized(colonies) {
+    		if(!colonies.contains(c)){
+    			colonies.add(c);
+    		}
     	}
     }
     
     public void DelColony(Colony c){
-    	if(c != null) {
-    		colonies.remove(c);
+    	synchronized(colonies) {
+    		if(c != null) {
+    			colonies.remove(c);
+    		}
     	}
     }
     

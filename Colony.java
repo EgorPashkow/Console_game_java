@@ -7,6 +7,9 @@ public class Colony {
     
     public Colony(String temp){
     	name = temp;
+    	AddResorce(new Electric());
+		AddResorce(new Matter());
+		AddResorce(new People());
     }
     
     public String toString() {
@@ -33,26 +36,62 @@ public class Colony {
     }
     
     public void AddResorce(Resurce r){
-    	if(!res.contains(r)){
-    		res.add(r);
+    	synchronized(res) {
+    		if(!res.contains(r)){
+    			res.add(r);
+    		}
     	}
+    }
+    
+    public Resurce GetResurce(String name){
+    	for (Resurce temp : res) {
+    		if(temp.getClass().getSimpleName()==name) {
+    			return temp;
+    		}
+    	}
+    	return null;
     }
     
     public void DelResorce(Resurce r){
-    	if(r != null){
-    		res.remove(r);
+    	synchronized(res) {
+    		if(r != null){
+    			res.remove(r);
+    		}
     	}
     }
     
-    public void AddBuilding(Build b){
-    	if(!building.contains(b)){
-    		building.add(b);
+    public boolean CreateBuilding(Build b){
+    	synchronized(building) {
+    		if(!building.contains(b)){
+    			if(b.getClass().getSimpleName() == "MatterExtractor" && GetResurce("Matter").count >= b.cost
+    					&& GetResurce("People").count >= b.cost) {
+    				GetResurce("Matter").count += -b.cost;
+    				GetResurce("People").count += -b.cost;
+    				building.add(b);
+    				return true;
+    			}
+    			if(b.getClass().getSimpleName() == "PowerStation" && GetResurce("Electric").count >= b.cost
+    					&& GetResurce("People").count >= b.cost) {
+    				GetResurce("Electric").count += -b.cost;
+    				GetResurce("People").count += -b.cost;
+    				building.add(b);
+    				return true;
+    			}
+    			if(b.getClass().getSimpleName() == "House") {
+    				GetResurce("People").count += 300;
+    				building.add(b);
+    				return true;
+    			}
+    		}
     	}
+    	return false;
     }
     
     public void DelBuilding(Build b){
-    	if(b != null) {
-    		building.remove(b);
+    	synchronized(building) {
+    		if(b != null) {
+    			building.remove(b);
+    		}
     	}
     }
     

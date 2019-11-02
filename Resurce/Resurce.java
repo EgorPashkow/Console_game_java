@@ -1,3 +1,3 @@
 public abstract class Resurce {
-    public Integer count = 0;
+    public Integer count = 100;
 }

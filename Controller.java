@@ -35,8 +35,7 @@ public class Controller {
     		}
     		if(inp.equals("Select planet")){
     			System.out.print("\nName planet: ");
-    			Planet planet = galaxy.GetPlanet(Parse());
-    			planeting(planet);
+    			planeting(galaxy.GetPlanet(Parse()));
     		}
     		if(inp.equals("Help")){
     			Help("Galaxy");
@@ -61,8 +60,6 @@ public class Controller {
 			if(inp.equals("Create colony")){
 				System.out.print("\nName colony: ");
 				Colony colony = new Colony(Parse());
-				colony.AddResorce(new Electric());
-				colony.AddResorce(new Matter());
 				planet.AddColony(colony);
 			}
 			if(inp.equals("Delete colony")){
@@ -99,14 +96,18 @@ public class Controller {
     			String type = Parse();
     			System.out.print("\nName building: ");
     			String name = Parse();
+    			boolean good = false;
     			if(type.equals("House")){
-    				colony.AddBuilding(new House(name));
+    				good = colony.CreateBuilding(new House(name));
     			}
     			if(type.equals("Matter")){
-    				colony.AddBuilding(new MatterExtractor(name));
+    				good = colony.CreateBuilding(new MatterExtractor(name));
     			}
     			if(type.equals("Electric")){
-    				colony.AddBuilding(new PowerStation(name));
+    				good = colony.CreateBuilding(new PowerStation(name));
+    			}
+    			if(!good){
+    				System.out.println("Not enough resources\n");
     			}
     		}
     		if(inp.equals("Delete building")){
