@@ -68,8 +68,7 @@ public class Controller {
 			}
 			if(inp.equals("Select colony")){
     			System.out.print("\nName colony: ");
-    			Colony colonyo = planet.GetColony(Parse());
-    			colony(colonyo);
+    			colony(planet.GetColony(Parse()));
     		}
 			if(inp.equals("Help")){
     			Help("Planet");
